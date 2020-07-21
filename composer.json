@@ -1,18 +1,20 @@
 {
-    "name": "laravel-notification-channels/:package_name",
-    "description": ":package_description",
-    "homepage": "https://github.com/laravel-notification-channels/:package_name",
+    "name": "laravel-notification-channels/viber-net-ua",
+    "description": "viber.net.ua notification channel for Laravel",
+    "homepage": "https://github.com/laravel-notification-channels/viber-net-ua",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
-            "homepage": ":author_website",
+            "name": "Vitalii Goncharov",
+            "email": "1c.audit@gmail.com",
+            "homepage": "https://github.com/gvital3230",
             "role": "Developer"
         }
     ],
     "require": {
         "php": ">=7.2",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "6.*",
         "illuminate/notifications": "~5.5 || ~6.0 || ~7.0",
         "illuminate/support": "~5.5 || ~6.0 || ~7.0"
     },
@@ -22,12 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "NotificationChannels\\:channel_namespace\\": "src"
+            "NotificationChannels\\ViberNetUa\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "NotificationChannels\\:channel_namespace\\Test\\": "tests"
+            "NotificationChannels\\ViberNetUa\\Test\\": "tests"
         }
     },
     "scripts": {
@@ -36,5 +38,12 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "NotificationChannels\\ViberNetUa\\ViberNetUaServiceProvider"
+            ]
+        }
     }
 }
