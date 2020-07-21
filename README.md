@@ -1,31 +1,21 @@
-Please see [this repo](https://github.com/laravel-notification-channels/channels) for instructions on how to submit a channel proposal.
+# ViberNetUa Notifications Channel for Laravel
 
-# A Boilerplate repo for contributions
-
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/laravel-notification-channels/viber-net-ua.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/viber-net-ua)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/laravel-notification-channels/vibernetua.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/vibernetua)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Build Status](https://img.shields.io/travis/laravel-notification-channels/viber-net-ua/master.svg?style=flat-square)](https://travis-ci.org/laravel-notification-channels/viber-net-ua)
-[![StyleCI](https://styleci.io/repos/:style_ci_id/shield)](https://styleci.io/repos/:style_ci_id)
-[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/:sensio_labs_id.svg?style=flat-square)](https://insight.sensiolabs.com/projects/:sensio_labs_id)
-[![Quality Score](https://img.shields.io/scrutinizer/g/laravel-notification-channels/viber-net-ua.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/viber-net-ua)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/laravel-notification-channels/viber-net-ua/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/viber-net-ua/?branch=master)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravel-notification-channels/viber-net-ua.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/viber-net-ua)
+[![Build Status](https://img.shields.io/travis/laravel-notification-channels/vibernetua/master.svg?style=flat-square)](https://travis-ci.org/laravel-notification-channels/vibernetua)
+[![StyleCI](https://styleci.io/repos/234812852/shield)](https://styleci.io/repos/234812852)
+[![Quality Score](https://img.shields.io/scrutinizer/g/laravel-notification-channels/vibernetua.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/vibernetua)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/laravel-notification-channels/vibernetua/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/vibernetua/?branch=master)
+[![Total Downloads](https://img.shields.io/packagist/dt/laravel-notification-channels/vibernetua.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/vibernetua)
 
-This package makes it easy to send notifications using [:service_name](link to service) with Laravel 5.5+, 6.x and 7.x
-
-**Note:** Replace ```ViberNetUa``` ```:service_name``` ```Vitalii Goncharov``` ```:author_username``` ```gvital.xyz``` ```1c.audit@gmail.com``` ```viber-net-ua``` ```viber.net.ua notification channel for Laravel``` ```:style_ci_id``` ```:sensio_labs_id``` with their correct values in [README.md](README.md), [CHANGELOG.md](CHANGELOG.md), [CONTRIBUTING.md](CONTRIBUTING.md), [LICENSE.md](LICENSE.md), [composer.json](composer.json) and other files, then delete this line.
-**Tip:** Use "Find in Path/Files" in your code editor to find these keywords within the package directory and replace all occurences with your specified term.
-
-This is where your description should go. Add a little code example so build can understand real quick how the package can be used. Try and limit it to a paragraph or two.
-
-
+This package makes it easy to send notifications using [ViberNetUa](https://viber.net.ua) with Laravel 5.5+, 6.0 and 7.0
 
 ## Contents
 
 - [Installation](#installation)
-	- [Setting up the :service_name service](#setting-up-the-:service_name-service)
+	- [Setting up the ViberNetUa service](#setting-up-the-ViberNetUa-service)
 - [Usage](#usage)
-	- [Available Message methods](#available-message-methods)
+	- [ On-Demand Notifications](#on-demand-notifications)
 - [Changelog](#changelog)
 - [Testing](#testing)
 - [Security](#security)
@@ -36,19 +26,69 @@ This is where your description should go. Add a little code example so build can
 
 ## Installation
 
-Please also include the steps for any third-party service setup that's required for this package.
+You can install this package via composer:
+``` bash
+composer require gvital3230/laravel-notification-channel-viber-net-ua
+```
 
-### Setting up the :service_name service
+### Setting up the ViberNetUa service
 
-Optionally include a few steps how users can set up the service.
+Add your ViberNetUa sms gate login, password and default sender name to your config/services.php:
+
+```php
+// config/services.php
+...
+    'vibernetua' => [
+        'endpoint' => env('VIBERNETUA_ENDPOINT', 'https://my2.viber.net.ua/api/v2/viber/dispatch'),
+        'token' => env('VIBERNETUA_TOKEN'),
+        'sender' => env('VIBERNETUA_SENDER'),
+        'debug' => env('VIBERNETUA_DEBUG'),
+        'sandboxMode' => env('VIBERNETUA_SANDBOX_MODE', false),
+    ],
+...
+```
 
 ## Usage
 
-Some code examples, make it clear how to use the package
+You can use the channel in your via() method inside the notification:
 
-### Available Message methods
+```php
+use Illuminate\Notifications\Notification;
+use NotificationChannels\ViberNetUa\ViberNetUaMessage;
 
-A list of all available options
+class AccountApproved extends Notification
+{
+    public function via($notifiable)
+    {
+        return ['vibernetua'];
+    }
+
+    public function toViberNetUa($notifiable)
+    {
+        return (new ViberNetUaMessage(
+            \NotificationChannels\ViberNetUa\ViberNetUaMessageType::TYPE_ONLY_MESSAGE(), 
+            'Account approved', 
+            'Congratulations, your accaunt was approved!'));       
+    }
+}
+```
+
+In your notifiable model, make sure to include a routeNotificationForViberNetUa() method, which returns a phone number or an array of phone numbers.
+
+```php
+public function routeNotificationForViberNetUa()
+{
+    return $this->phone;
+}
+```
+
+### On-Demand Notifications
+Sometimes you may need to send a notification to someone who is not stored as a "user" of your application. Using the Notification::route method, you may specify ad-hoc notification routing information before sending the notification:
+
+```php
+Notification::route('vibernetua', '+380501111111')                      
+            ->notify(new AccountApproved());
+```
 
 ## Changelog
 
@@ -70,7 +110,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Credits
 
-- [Vitalii Goncharov](https://github.com/:author_username)
+- [Vitalii Goncharov](https://github.com/gvital3230)
 - [All Contributors](../../contributors)
 
 ## License

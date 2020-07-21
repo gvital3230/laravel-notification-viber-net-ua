@@ -5,11 +5,25 @@ namespace NotificationChannels\ViberNetUa;
 class ViberNetUaMessage
 {
     /**
-     * Message body.
-     *
+     * @var ViberNetUaMessageType
+     */
+    public $type;
+    /**
      * @var string
      */
-    public $body;
+    public $message;
+    /**
+     * @var string
+     */
+    public $url_image;
+    /**
+     * @var string
+     */
+    public $button_name;
+    /**
+     * @var string
+     */
+    public $button_url;
     /**
      * @var string
      */
@@ -17,12 +31,27 @@ class ViberNetUaMessage
 
     /**
      * ViberNetUaMessage constructor.
+     * @param ViberNetUaMessageType $type
      * @param string $name
-     * @param string $body
+     * @param string $message
+     * @param string $url_image
+     * @param string $button_name
+     * @param string $button_url
      */
-    public function __construct(string $name, string $body)
+    public function __construct(
+        ViberNetUaMessageType $type,
+        string $name,
+        string $message,
+        string $url_image = '',
+        string $button_name = '',
+        string $button_url = ''
+    )
     {
-        $this->body = $body;
         $this->name = $name;
+        $this->type = $type;
+        $this->message = $message;
+        $this->url_image = $url_image;
+        $this->button_name = $button_name;
+        $this->button_url = $button_url;
     }
 }

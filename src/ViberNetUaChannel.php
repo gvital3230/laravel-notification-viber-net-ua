@@ -73,7 +73,10 @@ class ViberNetUaChannel
         /** @var ViberNetUaMessage $message */
         $message = $notification->toViberNetUa($notifiable);
         if (is_string($message)) {
-            $message = new ViberNetUaMessage($message);
+            $message = new ViberNetUaMessage(
+                ViberNetUaMessageType::TYPE_ONLY_MESSAGE(),
+                '',
+                $message);
         }
 
         if ($this->debug) {
@@ -85,18 +88,65 @@ class ViberNetUaChannel
         }
 
         try {
+            $json = [];
+            if ($message->type === ViberNetUaMessageType::TYPE_ONLY_MESSAGE()) {
+                $json = [
+                    'name' => $message->name,
+                    'recipients' => $notifiable->routeNotificationFor('vibernetua'),
+                    'sender' => $this->sender,
+                    'message' => $message->message,
+                ];
+            } elseif ($message->type === ViberNetUaMessageType::TYPE_ONLY_IMAGE()) {
+                $json = [
+                    'name' => $message->name,
+                    'recipients' => $notifiable->routeNotificationFor('vibernetua'),
+                    'sender' => $this->sender,
+                    'url_image' => $message->url_image,
+                ];
+            } elseif ($message->type === ViberNetUaMessageType::TYPE_ONLY_BUTTON()) {
+                $json = [
+                    'name' => $message->name,
+                    'recipients' => $notifiable->routeNotificationFor('vibernetua'),
+                    'sender' => $this->sender,
+                    'button_name' => $message->button_name,
+                    'button_url' => $message->button_url,
+                ];
+            } elseif ($message->type === ViberNetUaMessageType::TYPE_MESSAGE_AND_BUTTON()) {
+                $json = [
+                    'name' => $message->name,
+                    'recipients' => $notifiable->routeNotificationFor('vibernetua'),
+                    'sender' => $this->sender,
+                    'message' => $message->message,
+                    'button_name' => $message->button_name,
+                    'button_url' => $message->button_url,
+                ];
+            } elseif ($message->type === ViberNetUaMessageType::TYPE_IMAGE_AND_BUTTON()) {
+                $json = [
+                    'name' => $message->name,
+                    'recipients' => $notifiable->routeNotificationFor('vibernetua'),
+                    'sender' => $this->sender,
+                    'url_image' => $message->url_image,
+                    'button_name' => $message->button_name,
+                    'button_url' => $message->button_url,
+                ];
+            } elseif ($message->type === ViberNetUaMessageType::TYPE_MESSAGE_IMAGE_AND_BUTTON()) {
+                $json = [
+                    'name' => $message->name,
+                    'recipients' => $notifiable->routeNotificationFor('vibernetua'),
+                    'sender' => $this->sender,
+                    'message' => $message->message,
+                    'url_image' => $message->url_image,
+                    'button_name' => $message->button_name,
+                    'button_url' => $message->button_url,
+                ];
+            }
             /** @var Response $response */
             $response = $this->client->request('POST', $this->endpoint, [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $this->token,
 //                    'Accept' => 'application/json',
                 ],
-                'json' => [
-                    'name' => $message->name,
-                    'recipients' => $notifiable->routeNotificationFor('vibernetua'),
-                    'sender' => $this->sender,
-                    'message' => $message->body,
-                ]
+                'json' => $json
             ]);
 
             $result = (array)\GuzzleHttp\json_decode($response->getBody());
@@ -105,7 +155,7 @@ class ViberNetUaChannel
                 Log::info('ViberNetUa send result code - ' . $response->getStatusCode() . ' with body' . $response->getBody());
             }
 
-            if (Arr::get($result, 'status') !== 'success'){
+            if (Arr::get($result, 'status') !== 'success') {
                 throw new \Exception(print_r($result, true));
             }
 

@@ -1,5 +1,5 @@
 {
-    "name": "laravel-notification-channels/viber-net-ua",
+    "name": "gvital3230/laravel-notification-channel-viber-net-ua",
     "description": "viber.net.ua notification channel for Laravel",
     "homepage": "https://github.com/laravel-notification-channels/viber-net-ua",
     "license": "MIT",
@@ -16,7 +16,8 @@
         "ext-json": "*",
         "guzzlehttp/guzzle": "6.*",
         "illuminate/notifications": "~5.5 || ~6.0 || ~7.0",
-        "illuminate/support": "~5.5 || ~6.0 || ~7.0"
+        "illuminate/support": "~5.5 || ~6.0 || ~7.0",
+        "myclabs/php-enum": "^1.7"
     },
     "require-dev": {
         "mockery/mockery": "^1.0",

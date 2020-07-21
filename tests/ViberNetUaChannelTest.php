@@ -123,6 +123,6 @@ class TestNotification extends Notification
 {
     public function toViberNetUa($notifiable)
     {
-        return new ViberNetUaMessage('TEST_BODY');
+        return new ViberNetUaMessage(ViberNetUaMessageType::TYPE_ONLY_MESSAGE(), 'TEST_NAME', 'TEST_BODY');
     }
 }
