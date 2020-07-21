@@ -89,21 +89,21 @@ class ViberNetUaChannel
 
         try {
             $json = [];
-            if ($message->type === ViberNetUaMessageType::TYPE_ONLY_MESSAGE()) {
+            if ($message->type == ViberNetUaMessageType::TYPE_ONLY_MESSAGE()) {
                 $json = [
                     'name' => $message->name,
                     'recipients' => $notifiable->routeNotificationFor('vibernetua'),
                     'sender' => $this->sender,
                     'message' => $message->message,
                 ];
-            } elseif ($message->type === ViberNetUaMessageType::TYPE_ONLY_IMAGE()) {
+            } elseif ($message->type == ViberNetUaMessageType::TYPE_ONLY_IMAGE()) {
                 $json = [
                     'name' => $message->name,
                     'recipients' => $notifiable->routeNotificationFor('vibernetua'),
                     'sender' => $this->sender,
                     'url_image' => $message->url_image,
                 ];
-            } elseif ($message->type === ViberNetUaMessageType::TYPE_ONLY_BUTTON()) {
+            } elseif ($message->type == ViberNetUaMessageType::TYPE_ONLY_BUTTON()) {
                 $json = [
                     'name' => $message->name,
                     'recipients' => $notifiable->routeNotificationFor('vibernetua'),
@@ -111,7 +111,7 @@ class ViberNetUaChannel
                     'button_name' => $message->button_name,
                     'button_url' => $message->button_url,
                 ];
-            } elseif ($message->type === ViberNetUaMessageType::TYPE_MESSAGE_AND_BUTTON()) {
+            } elseif ($message->type == ViberNetUaMessageType::TYPE_MESSAGE_AND_BUTTON()) {
                 $json = [
                     'name' => $message->name,
                     'recipients' => $notifiable->routeNotificationFor('vibernetua'),
@@ -120,7 +120,7 @@ class ViberNetUaChannel
                     'button_name' => $message->button_name,
                     'button_url' => $message->button_url,
                 ];
-            } elseif ($message->type === ViberNetUaMessageType::TYPE_IMAGE_AND_BUTTON()) {
+            } elseif ($message->type == ViberNetUaMessageType::TYPE_IMAGE_AND_BUTTON()) {
                 $json = [
                     'name' => $message->name,
                     'recipients' => $notifiable->routeNotificationFor('vibernetua'),
@@ -129,7 +129,7 @@ class ViberNetUaChannel
                     'button_name' => $message->button_name,
                     'button_url' => $message->button_url,
                 ];
-            } elseif ($message->type === ViberNetUaMessageType::TYPE_MESSAGE_IMAGE_AND_BUTTON()) {
+            } elseif ($message->type == ViberNetUaMessageType::TYPE_MESSAGE_IMAGE_AND_BUTTON()) {
                 $json = [
                     'name' => $message->name,
                     'recipients' => $notifiable->routeNotificationFor('vibernetua'),
