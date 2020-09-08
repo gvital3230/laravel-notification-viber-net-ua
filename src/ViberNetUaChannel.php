@@ -88,49 +88,51 @@ class ViberNetUaChannel
         }
 
         try {
-            $json = [];
+            $json = [
+                'validity' => $message->validity
+            ];
             if ($message->type === ViberNetUaMessageType::TYPE_ONLY_MESSAGE()) {
-                $json = [
+                $json = array_merge($json, [
                     'name' => $message->name,
                     'recipients' => $notifiable->routeNotificationFor('vibernetua'),
                     'sender' => $this->sender,
                     'message' => $message->message,
-                ];
+                ]);
             } elseif ($message->type === ViberNetUaMessageType::TYPE_ONLY_IMAGE()) {
-                $json = [
+                $json = array_merge($json, [
                     'name' => $message->name,
                     'recipients' => $notifiable->routeNotificationFor('vibernetua'),
                     'sender' => $this->sender,
                     'url_image' => $message->url_image,
-                ];
+                ]);
             } elseif ($message->type === ViberNetUaMessageType::TYPE_ONLY_BUTTON()) {
-                $json = [
+                $json = array_merge($json, [
                     'name' => $message->name,
                     'recipients' => $notifiable->routeNotificationFor('vibernetua'),
                     'sender' => $this->sender,
                     'button_name' => $message->button_name,
                     'button_url' => $message->button_url,
-                ];
+                ]);
             } elseif ($message->type === ViberNetUaMessageType::TYPE_MESSAGE_AND_BUTTON()) {
-                $json = [
+                $json = array_merge($json, [
                     'name' => $message->name,
                     'recipients' => $notifiable->routeNotificationFor('vibernetua'),
                     'sender' => $this->sender,
                     'message' => $message->message,
                     'button_name' => $message->button_name,
                     'button_url' => $message->button_url,
-                ];
+                ]);
             } elseif ($message->type === ViberNetUaMessageType::TYPE_IMAGE_AND_BUTTON()) {
-                $json = [
+                $json = array_merge($json, [
                     'name' => $message->name,
                     'recipients' => $notifiable->routeNotificationFor('vibernetua'),
                     'sender' => $this->sender,
                     'url_image' => $message->url_image,
                     'button_name' => $message->button_name,
                     'button_url' => $message->button_url,
-                ];
+                ]);
             } elseif ($message->type === ViberNetUaMessageType::TYPE_MESSAGE_IMAGE_AND_BUTTON()) {
-                $json = [
+                $json = array_merge($json, [
                     'name' => $message->name,
                     'recipients' => $notifiable->routeNotificationFor('vibernetua'),
                     'sender' => $this->sender,
@@ -138,7 +140,7 @@ class ViberNetUaChannel
                     'url_image' => $message->url_image,
                     'button_name' => $message->button_name,
                     'button_url' => $message->button_url,
-                ];
+                ]);
             }
             /** @var Response $response */
             $response = $this->client->request('POST', $this->endpoint, [
