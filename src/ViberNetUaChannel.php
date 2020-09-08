@@ -88,9 +88,12 @@ class ViberNetUaChannel
         }
 
         try {
-            $json = [
-                'validity' => $message->validity
-            ];
+            $json = [];
+            if ($message->validity) {
+                $json = array_merge($json, [
+                    'validity' => $message->validity
+                ]);
+            }
             if ($message->type == ViberNetUaMessageType::TYPE_ONLY_MESSAGE()) {
                 $json = array_merge($json, [
                     'name' => $message->name,

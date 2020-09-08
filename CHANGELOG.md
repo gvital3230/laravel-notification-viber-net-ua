@@ -6,6 +6,6 @@ All notable changes to `viber-net-ua` will be documented in this file
 
 - initial release
 
-## 1.1.0 - 2020-09-08
+## 1.1.1 - 2020-09-08
 
 - add message validity time property
