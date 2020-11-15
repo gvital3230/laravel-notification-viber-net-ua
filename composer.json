@@ -14,9 +14,9 @@
     "require": {
         "php": ">=7.2",
         "ext-json": "*",
-        "guzzlehttp/guzzle": "6.*",
-        "illuminate/notifications": "~5.5 || ~6.0 || ~7.0",
-        "illuminate/support": "~5.5 || ~6.0 || ~7.0",
+        "guzzlehttp/guzzle": "6.* || ~7.0",
+        "illuminate/notifications": "~5.5 || ~6.0 || ~7.0 || ~8.0",
+        "illuminate/support": "~5.5 || ~6.0 || ~7.0 || ~8.0",
         "myclabs/php-enum": "^1.7"
     },
     "require-dev": {
